@@ -42,17 +42,77 @@ No selected method, appending 100 random scramble(s) of 25 movements to 'scrambl
 
 To continue this tutorial, delete the **scrambles.txt** file and generate a new one with only a scramble.
 
-### Layer-By-Layer method
+### Common parameters - ORIENTATION (-o[orientation])
 
-### CFOP method
+Choose here the cube orientation for the required solves. Selections with many orientations (All, U & D, etc.) requires more processing time than specific orientations (U, UF, etc.)
 
-### Roux method
+The orientations refer to the position of the cube when you perform the scramble. For example, if you perform the scramble with the white face up and the green face in the front, the DR (down-right) orientation will be with yellow face up and red face in the front.
 
-### Petrus method
+By default all orientations will be explored. You can specify the next orientations:
 
-### ZZ method
+- U (U layer up)
+- D (D layer up)
+- F (F layer up)
+- B (B layer up)
+- R (R layer up)
+- L (L layer up)
+- UD (U & D layers up)
+- FB (F & B layers up)
+- RL (R & L layers up)
+- UF
+- UR
+- UB
+- UL
+- DF
+- DR
+- DB
+- DL
+- FU
+- FR
+- FD
+- FL
+- BU
+- BR
+- BD
+- BL
+- RU
+- RF
+- RD
+- RB
+- LU
+- LF
+- LD
+- LB
 
-### Common parameters
+Example, CFOP solves with cross in U & D layers:
+
+```
+> ./ssmaster cfop -oUD
+Selected CFOP method (parameter 'cfop')
+Orientation search defined (parameter '-oUD')
+Parameters summary:
+        Selected method: CFOP
+        Orientation(s): U & D layers up
+```
+
+### Common parameters - MAX. INSPECTIONS (-i[number])
+
+Is the maximum number of solves that will be analyzed for each orientation.
+
+It's possible not to reach the required number of inspections, as not all orientations provide the same amount of solves, or even not solves at all.
+
+Example, CFOP solves with cross in D layer (U layer up) and a maximum of 4 different inspections (solves):
+
+```
+> ./ssmaster cfop -oU -i4
+Selected CFOP method (parameter 'cfop')
+Orientation search defined (parameter '-oU')
+Number of inspections set to 4 (parameter '-i4')
+```
+
+Note: inspections parameter do not have influence in LBL method.
+
+### Common parameters - METRIC
 
 By default, the STM metric (slice turn metric) will be used. You can specify another metric:
 
@@ -65,3 +125,23 @@ By default, the STM metric (slice turn metric) will be used. You can specify ano
 - PTM
 - 1.5HTM
 - OBTM
+
+Example, LBL solve with 1.5 Half Turn Metric:
+
+```
+> ./ssmaster lbl 1.5htm
+Selected LBL method (parameter 'lbl')
+Using 1.5HTM metric (parameter '1.5htm')
+```
+
+See https://www.speedsolving.com/wiki/index.php/Metric for information about metrics.
+
+### Layer-By-Layer method
+
+### CFOP method
+
+### Roux method
+
+### Petrus method
+
+### ZZ method
