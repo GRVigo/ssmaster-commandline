@@ -357,7 +357,7 @@ Note: Regrips will not be applied in LBL method.
 
 ### Common parameters - SEARCH DEPTH(S) (-d[number] -s[number])
 
-With the depth(s) parameter(s) you control how deep is the search of the solves. With a value of 6 you should obtain some solves (not always). A value of 7 gives you more solves and a value of 8 should give you at least one solve in each orientation (usually many more). Take care, as the search time increases exponentially with this value, for example, in my computer a value of 6 lasts around 1-2 seconds, a value of 8 around 15-20 seconds, with a depth of 8 a few minutes, and with 9 (the maximum allowed) can be an hour or more. This times are relative, as many factors have influence.
+With the depth(s) parameter(s) you control how deep is the search of the solves. With a value of 6 you should obtain some solves (not always). A value of 7 gives you more solves and a value of 8 should give you at least one solve in each orientation (usually many more). Take care, as the search time increases exponentially with this value, for example, in my computer a value of 6 lasts around 1-2 seconds, a value of 7 around 15-20 seconds, with a depth of 8 a few minutes, and with 9 (the maximum allowed) can be an hour or more. This times are relative, as many factors have influence.
 
 CFOP and ZZ methods uses only the **-d** parameter (for the cross and EO X respectively). Roux and Petrus also need the **-s** parameter, to specify the second block and F2L search depth, respectively.
 
