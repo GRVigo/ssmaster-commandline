@@ -14,6 +14,7 @@ Unzip the release file in a directory with write permissions. If you list the fi
 
 Note: some algsets have more than one algorithm per case, but only the first one will be used.
 
+
 ### Generating scrambles
 
 First at all you need a scramble, so run the executable file without parameters:
@@ -41,6 +42,7 @@ No selected method, appending 100 random scramble(s) of 25 movements to 'scrambl
 **scrambles.txt** is a regular text file with one scramble per line. Of course, you can edit it and write your own scrambles.
 
 To continue this tutorial, delete the **scrambles.txt** file and generate a new one with only a scramble.
+
 
 ### Common parameters - ORIENTATION (-o[orientation])
 
@@ -95,6 +97,7 @@ Parameters summary:
         Orientation(s): U & D layers up
 ```
 
+
 ### Common parameters - MAX. INSPECTIONS (-i[number])
 
 Is the maximum number of solves that will be analyzed for each orientation.
@@ -111,6 +114,37 @@ Number of inspections set to 4 (parameter '-i4')
 ```
 
 Note: inspections parameter do not have influence in LBL method.
+
+
+### Common parameters - CANCELLATIONS (canc)
+
+If the cancellation option is enabled, cancellation of movements will be applyed to each solution in order to get the lower metric (STM by default). Cancellations metric will be shown surrounded by parentheses at the begining of each solve, near the regular metric. This metric will be used for evaluate the best solve, if the best solve option is enabled.
+
+Note: Cancellations will not be applied in LBL method.
+
+
+### Common parameters - BEST SOLVE (best)
+	
+If this option is enabled, the best solve (with lower metric) will be shown in detail.
+
+Note: LBL solve is unique, so this paramater is unnecessary with this method.
+
+
+### Common parameters - REGRIPS (regrip)
+
+If regrips are enabled, turns will be added to the solutions to get more comfortable movements.
+
+Note: Regrips will not be applied in LBL method.
+
+
+### Common parameters - SEARCH DEPTH(S) (-d[number] -s[number])
+
+With the depth(s) parameter(s) you control how deep is the search of the solves. With a value of 6 you should obtain some solves (not always). A value of 7 gives you more solves and a value of 8 should give you at least one solve in each orientation (usually many more). Take care, as the search time increases exponentially with this value, for example, in my computer a value of 6 lasts around 1-2 seconds, a value of 8 around 15-20 seconds, with a depth of 8 a few minutes, and with 9 (the maximum allowed) can be an hour or more. This times are relative, as many factors have influence.
+
+CFOP and ZZ methods uses only the **-d** parameter (for the cross and EO X respectively). Roux and Petrus also need the **-s** parameter, to specify the second block and F2L search depth, respectively.
+
+Note: Search depths will not be applied in LBL method.
+
 
 ### Common parameters - METRIC
 
@@ -136,12 +170,22 @@ Using 1.5HTM metric (parameter '1.5htm')
 
 See https://www.speedsolving.com/wiki/index.php/Metric for information about metrics.
 
+
+### Common parameters - CORES (-t[number])
+
+This parameter specifies the amount of CPU cores (threads) used in the search. A '0' value means all available cores will be used (default).
+
+
 ### Layer-By-Layer method
+
 
 ### CFOP method
 
+
 ### Roux method
 
+
 ### Petrus method
+
 
 ### ZZ method
