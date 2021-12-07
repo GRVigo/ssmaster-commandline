@@ -43,6 +43,68 @@ No selected method, appending 100 random scramble(s) of 25 movements to 'scrambl
 
 To continue this tutorial, delete the **scrambles.txt** file and generate a new one with only a scramble.
 
+### CFOP example
+
+CFOP search with cross layer D (up layer U), 4 inspections maximum, 1LLL algset for last layer, cancellations and regrips will be applied, best solve will be shown in detail, HTM metric will be used, search depth is set to 7, and search times will be shown:
+
+```
+> ./ssmaster cfop -oU -i4 1lll canc regrip best htm -d7 time
+Selected CFOP method (parameter 'cfop')
+Orientation search defined (parameter '-oU')
+Number of inspections set to 4 (parameter '-i4')
+Selected 1LLL algorithms collection (parameter '1lll')
+Cancellations enabled (parameter 'canc')
+Regrip enabled (parameter 'regrip')
+Show best solve (parameter 'best')
+Using HTM metric (parameter 'htm')
+Primary depth set to 7 (parameter '-d7')
+Show times (parameter 'time')
+Parameters summary:
+        Selected method: CFOP
+        Orientation(s): U layer up
+        Number of inspections per orientation: 4
+        Metric: HTM
+        Last layer in one look: 1LLL
+        Search depth: 7
+        Best solve will be shown
+        Regrips will be added
+        Cancellations will be applied
+        Search times will be shown
+        Cores: All
+Scrambles file detected, using it for solves...
+Solve 1 of 1
+Searching CFOP crosses... F2L... 1LLL... Done!
+
+CFOP search for Scramble (20): F B' R U F' D F' B2 U' R' F2 U D R2 U' B' R2 L D' U2
+--------------------------------------------------------------------------------
+[Cross D|52(52) HTM]: (z') (U R U L F R2 U') (z y' R U' R' F' U' F) (y2 U' F' U' F U R U R') (y' z R U R U') (z' y' U' R' U2 R U' R' U R) (F R U' R' U' R U2 R' U' R U' R' U' R U2 R' U' F') (U2)
+[Cross D|51(50) HTM]: (U' R' B' R2 F L D') (F U2 F' U R U' R') (R' U' R L' U L) (x' F U' F U F' R' F R) (x z R U R U' R2 U R' U') (z' y' F R U R' U' R U R' F2 r U r2 F r) (U2)
+[Cross D|52(52) HTM]: (z') (U R2 F R' U F R2) (z2 U' R2 U F' R2 F) (z' y U2 R' U R F' U' F) (y F' U F R' U' R) (U2 R U2 R' U F' U' F) (y' R' U' R' F R F' U R U' R' U' R' F R F' U R) (U')
+[Cross D|53(53) HTM]: (z') (L F2 U R2 F U' R) (z y L U' L' R' U R) (y' U' R' U2 R F' U F) (U R' U R U2 F U F') (y U' R U' R' U R U R') (F R' F' R U2 R U2 R' U2 r U2 R' U' R U' r') (U)
+
+
+Best solve - CFOP search with cross in layer D:
+---------------------------------
+Cross (7): U' R' B' R2 F L D'
+F2L 1 (7): F U2 F' U R U' R'
+F2L 2 (6): R' U' R L' U L
+F2L 3 (8): x' F U' F U F' R' F R
+F2L 4 (8): x z R U R U' R2 U R' U'
+1LLL (14): z' y' F R U R' U' R U R' F2 r U r2 F r
+AUF: U2
+
+Solve metric: 51 HTM
+Cross in layer D, in 7 or less movements
+1LLL case: 2289
+
+Cancellations (50 HTM): U' R' B' R2 F L D' F U2 F' U R U' R2 U' M x U L x' F U' F U F' R' F R x z R U R U' R2 U R' U' z' y' F R U R' U' R U R' F2 r U r2 F r U2
+
+Total search time: 11.422779 s
+Crosses search time: 5.554943 s
+F2L search time: 5.790450 s
+Last layer search time: 0.077387 s
+Threads used: 12 of 12
+```
 
 ### Common parameters - ORIENTATION (-o[orientation])
 
