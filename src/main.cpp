@@ -18,8 +18,8 @@ using namespace tinyxml2;
 
 enum class Methods { NONE, LBL, CFOP, ROUX, PETRUS, ZZ };
 enum class Collections { NONE, OLL, PLL, _1LLL, COLL, CMLL, EPLL, OCLL, ZBLL };
-enum class Orientations 
-{ 
+enum class Orientations
+{
 	ALL,
 	Ux, Dx, Fx, Bx, Rx, Lx,
 	UD, FB, RL,
@@ -31,7 +31,7 @@ enum class Orientations
 	LU, LF, LD, LB,
 };
 
-static std::string o_strings[] = 
+static std::string o_strings[] =
 {
 	"All",
 	"U layer up", "D layer up", "F layer up", "B layer up", "R layer up", "L layer up",
@@ -45,7 +45,7 @@ static std::string o_strings[] =
 };
 
 // Command line parameters
-static struct 
+static struct
 {
 	Methods Method = Methods::NONE;
 	Collections Collect = Collections::NONE;
@@ -53,10 +53,10 @@ static struct
 	Metrics Metric = Metrics::STM;
 
 	uint NumSolves = 1u, // Number of random solves to perform
-		 LengthScramble = 20u, // Scramble length
-		 NumInsp = 1u, // Number of inspections per orientation
-		 Depth1 = 6u, // Primary depth
-		 Depth2 = 6u; // Secondary depth
+		LengthScramble = 20u, // Scramble length
+		NumInsp = 1u, // Number of inspections per orientation
+		Depth1 = 7u, // Primary depth
+		Depth2 = 6u; // Secondary depth
 
 	int Threads = 0; // Number of threads to use in the search (0 = all cores, -1 = no threads)
 
@@ -78,15 +78,17 @@ void sRoux(const Algorithm&, std::ofstream&);
 void sPetrus(const Algorithm&, std::ofstream&);
 void sZZ(const Algorithm&, std::ofstream&);
 
-  // ********************************************************************************* //
- // ********** Main function ******************************************************** //
+// ********************************************************************************* //
+// ********** Main function ******************************************************** //
 // ********************************************************************************* //
 
 int main(int argc, char* argv[])
 {
+	std::cout << "--- SpeedSolving Master beta - command line version ---\n\n";
+
 	// Process command line parameters
 	ProcessParameters(argc, argv);
-	
+
 	std::cout << GetParametersSummary();
 
 	if (Parameters.Method == Methods::NONE)
@@ -120,21 +122,21 @@ int main(int argc, char* argv[])
 	// Open log file
 	std::ofstream f_log;
 	f_log.open("LOG.txt", std::ofstream::app);
-	
-#ifdef __linux__
-    
-	auto t = std::time(nullptr);
-    auto tm = *std::localtime(&t);
 
-    std::ostringstream oss;
-    oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
+#ifdef __linux__
+
+	auto t = std::time(nullptr);
+	auto tm = *std::localtime(&t);
+
+	std::ostringstream oss;
+	oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
 
 	f_log << "----------------------------------------\n" << argv[0] << " executed at " << oss.str() << "\n";
 #else
-    char currenttime[100];
+	char currenttime[100];
 	std::time_t start_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 	ctime_s(currenttime, 100, &start_time);
-	f_log << "----------------------------------------\n"  << argv[0] << " executed at " << currenttime << "\n";
+	f_log << "----------------------------------------\n" << argv[0] << " executed at " << currenttime << "\n";
 #endif
 	f_log << GetExternalFilesCheck();
 	f_log << "\n";
@@ -160,8 +162,8 @@ int main(int argc, char* argv[])
 	f_log.close();
 }
 
-  // ********************************************************************************* //
- // ********** Functions ************************************************************ //
+// ********************************************************************************* //
+// ********** Functions ************************************************************ //
 // ********************************************************************************* //
 
 void ProcessParameters(int argc, char* argv[])
@@ -288,70 +290,70 @@ void ProcessParameters(int argc, char* argv[])
 			std::cout << "Roux L6E in one look (parameter '" << Par << "')" << std::endl;
 			continue;
 		}
-		
+
 		if (Par.find("QSTM") != std::string::npos || Par.find("Qstm") != std::string::npos || Par.find("qstm") != std::string::npos)
 		{
 			Parameters.Metric = Metrics::QSTM;
 			std::cout << "Using QSTM metric (parameter '" << Par << "')" << std::endl;
 			continue;
 		}
-		
+
 		if (Par.find("STM") != std::string::npos || Par.find("Stm") != std::string::npos || Par.find("stm") != std::string::npos)
 		{
 			Parameters.Metric = Metrics::STM;
 			std::cout << "Using STM metric (parameter '" << Par << "')" << std::endl;
 			continue;
 		}
-		
+
 		if (Par.find("1.5HTM") != std::string::npos || Par.find("1.5Htm") != std::string::npos || Par.find("1.5htm") != std::string::npos)
 		{
 			Parameters.Metric = Metrics::HTM15;
 			std::cout << "Using 1.5HTM metric (parameter '" << Par << "')" << std::endl;
 			continue;
 		}
-		
+
 		if (Par.find("HTM") != std::string::npos || Par.find("Htm") != std::string::npos || Par.find("htm") != std::string::npos)
 		{
 			Parameters.Metric = Metrics::HTM;
 			std::cout << "Using HTM metric (parameter '" << Par << "')" << std::endl;
 			continue;
 		}
-		
+
 		if (Par.find("QTM") != std::string::npos || Par.find("Qtm") != std::string::npos || Par.find("qtm") != std::string::npos)
 		{
 			Parameters.Metric = Metrics::QTM;
 			std::cout << "Using QTM metric (parameter '" << Par << "')" << std::endl;
 			continue;
 		}
-		
+
 		if (Par.find("ETM") != std::string::npos || Par.find("Etm") != std::string::npos || Par.find("etm") != std::string::npos)
 		{
 			Parameters.Metric = Metrics::ETM;
 			std::cout << "Using ETM metric (parameter '" << Par << "')" << std::endl;
 			continue;
 		}
-		
+
 		if (Par.find("ATM") != std::string::npos || Par.find("Atm") != std::string::npos || Par.find("atm") != std::string::npos)
 		{
 			Parameters.Metric = Metrics::ATM;
 			std::cout << "Using ATM metric (parameter '" << Par << "')" << std::endl;
 			continue;
 		}
-		
+
 		if (Par.find("PTM") != std::string::npos || Par.find("Ptm") != std::string::npos || Par.find("ptm") != std::string::npos)
 		{
 			Parameters.Metric = Metrics::PTM;
 			std::cout << "Using PTM metric (parameter '" << Par << "')" << std::endl;
 			continue;
 		}
-		
+
 		if (Par.find("OBTM") != std::string::npos || Par.find("Obtm") != std::string::npos || Par.find("obtm") != std::string::npos)
 		{
 			Parameters.Metric = Metrics::OBTM;
 			std::cout << "Using OBTM metric (parameter '" << Par << "')" << std::endl;
 			continue;
 		}
-		
+
 		if (Par.find("TIME") != std::string::npos || Par.find("time") != std::string::npos || Par.find("Time") != std::string::npos)
 		{
 			Parameters.Times = true;
@@ -520,8 +522,8 @@ void ProcessParameters(int argc, char* argv[])
 			}
 			break;
 
-		default: 
-			std::cout << "Unknown parameter '" << Par << "'" << std::endl; 
+		default:
+			std::cout << "Unknown parameter '" << Par << "'" << std::endl;
 			break;
 		}
 	}
@@ -645,7 +647,7 @@ Lyr ProcessOrientations(const Orientations Orient)
 void sLBL(const Algorithm& Scramble, std::ofstream& flog)
 {
 	LBL SearchLBL(Scramble, Parameters.Threads);
-	
+
 	SearchLBL.SetMetric(Parameters.Metric);
 
 	Lyr FirstLayer = ProcessOrientations(Parameters.Orient);
@@ -727,9 +729,9 @@ void sCFOP(const Algorithm& Scramble, std::ofstream& flog)
 
 	std::cout << "Done!" << "\n\n" << SearchCFOP.GetReport(Parameters.Cancellations, Parameters.Debug) << std::endl;
 
-	if (Parameters.Best) std::cout << "\nBest solve - " << SearchCFOP.GetBestReport(Parameters.Cancellations) << std::endl; 
-	
-	if (Parameters.Times) std::cout << SearchCFOP.GetTimeReport() << std::endl; 
+	if (Parameters.Best) std::cout << "\nBest solve - " << SearchCFOP.GetBestReport(Parameters.Cancellations) << std::endl;
+
+	if (Parameters.Times) std::cout << SearchCFOP.GetTimeReport() << std::endl;
 }
 
 void sRoux(const Algorithm& Scramble, std::ofstream& flog)
@@ -741,7 +743,7 @@ void sRoux(const Algorithm& Scramble, std::ofstream& flog)
 	ProcessOrientations(SearchSpins, Parameters.Orient);
 
 	SearchRoux.SetSearchSpins(SearchSpins);
-	
+
 	SearchRoux.SetMetric(Parameters.Metric);
 
 	std::cout << "Searching Roux first blocks... " << std::flush;
@@ -779,12 +781,12 @@ void sRoux(const Algorithm& Scramble, std::ofstream& flog)
 	flog << SearchRoux.GetReport(Parameters.Cancellations, true); // Debug
 	if (Parameters.Best) flog << SearchRoux.GetBestReport(Parameters.Cancellations);
 	flog << "\n" << SearchRoux.GetTimeReport();
-	
+
 	std::cout << "Done!" << "\n\n" << SearchRoux.GetReport(Parameters.Cancellations, Parameters.Debug) << std::endl;
 
 	if (Parameters.Best) std::cout << "\nBest solve - " << SearchRoux.GetBestReport(Parameters.Cancellations) << std::endl;
-	
-	if (Parameters.Times) std::cout << SearchRoux.GetTimeReport() << std::endl; 
+
+	if (Parameters.Times) std::cout << SearchRoux.GetTimeReport() << std::endl;
 }
 
 void sPetrus(const Algorithm& Scramble, std::ofstream& flog)
@@ -796,7 +798,7 @@ void sPetrus(const Algorithm& Scramble, std::ofstream& flog)
 	ProcessOrientations(SearchSpins, Parameters.Orient);
 
 	SearchPetrus.SetSearchSpins(SearchSpins);
-	
+
 	SearchPetrus.SetMetric(Parameters.Metric);
 
 	std::cout << "Searching Petrus blocks... " << std::flush;
@@ -846,22 +848,22 @@ void sPetrus(const Algorithm& Scramble, std::ofstream& flog)
 	std::cout << "Done!" << "\n\n" << SearchPetrus.GetReport(Parameters.Cancellations, Parameters.Debug) << std::endl;
 
 	if (Parameters.Best) std::cout << "\nBest solve - " << SearchPetrus.GetBestReport(Parameters.Cancellations) << std::endl;
-	
-	if (Parameters.Times) std::cout << SearchPetrus.GetTimeReport() << std::endl; 
+
+	if (Parameters.Times) std::cout << SearchPetrus.GetTimeReport() << std::endl;
 }
 
 void sZZ(const Algorithm& Scramble, std::ofstream& flog)
 {
 	ZZ SearchZZ(Scramble, Parameters.Threads);
-	
+
 	std::vector<Spn> SearchSpins;
 
 	ProcessOrientations(SearchSpins, Parameters.Orient);
 
 	SearchZZ.SetSearchSpins(SearchSpins);
-	
+
 	SearchZZ.SetMetric(Parameters.Metric);
-	
+
 	std::cout << "Searching EOX... " << std::flush;
 	if (!SearchZZ.SearchEOX(Parameters.Depth1, Parameters.NumInsp))
 	{
@@ -895,7 +897,7 @@ void sZZ(const Algorithm& Scramble, std::ofstream& flog)
 	}
 
 	if (Parameters.Regrip) SearchZZ.SetRegrips();
-	
+
 	flog << SearchZZ.GetReport(Parameters.Cancellations, true); // Debug
 	if (Parameters.Best) flog << SearchZZ.GetBestReport(Parameters.Cancellations);
 	flog << "\n" << SearchZZ.GetTimeReport();
@@ -903,8 +905,8 @@ void sZZ(const Algorithm& Scramble, std::ofstream& flog)
 	std::cout << "Done!" << "\n\n" << SearchZZ.GetReport(Parameters.Cancellations, Parameters.Debug) << std::endl;
 
 	if (Parameters.Best) std::cout << "\nBest solve - " << SearchZZ.GetBestReport(Parameters.Cancellations) << std::endl;
-	
-	if (Parameters.Times) std::cout << SearchZZ.GetTimeReport() << std::endl; 
+
+	if (Parameters.Times) std::cout << SearchZZ.GetTimeReport() << std::endl;
 }
 
 std::string GetParametersSummary()
@@ -913,93 +915,93 @@ std::string GetParametersSummary()
 
 	switch (Parameters.Method)
 	{
-		case Methods::LBL:
-			oss << "Parameters summary:\n";
-			oss << "\tSelected method: Layer-By-Layer (LBL)\n";
-			oss << "\tOrientation (first layer): " << Cube::GetLayerChar(ProcessOrientations(Parameters.Orient)) << "\n";
-			oss << "\tMetric: " << Algorithm::GetMetricString(Parameters.Metric) << "\n";
-			if (Parameters.Times) oss << "\tSearch times will be shown\n";
-			oss << "\tCores: " << (Parameters.Threads == 0 ? "All\n" : std::to_string(Parameters.Threads)) << std::flush;
-			break;
-		case Methods::CFOP:
-			oss << "Parameters summary:\n";
-			oss << "\tSelected method: CFOP\n";
-			oss << "\tOrientation(s): " << o_strings[static_cast<int>(Parameters.Orient)] << "\n";
-			oss << "\tNumber of inspections per orientation: " << Parameters.NumInsp << "\n";
-			oss << "\tMetric: " << Algorithm::GetMetricString(Parameters.Metric) << "\n";
-			if (Parameters.Collect == Collections::NONE) oss << "\tUsing default algset for CFOP: OLL + PLL\n";
-			else if (Parameters.Collect == Collections::OLL || Parameters.Collect == Collections::PLL) oss << "\tLast layer in two looks: OLL + PLL\n";
-			else if (Parameters.Collect == Collections::_1LLL) oss << "\tLast layer in one look: 1LLL\n";
-			else if (Parameters.Collect == Collections::ZBLL) oss << "\tLast layer in two looks: EO + ZBLL\n";
-			else oss << "\tInvalid algset for CFOP, using OLL + PLL instead\n";
-			oss << "\tSearch depth: " << Parameters.Depth1 << "\n";
-			if (Parameters.Best) oss << "\tBest solve will be shown\n";
-			if (Parameters.Regrip) oss << "\tRegrips will be added\n";
-			if (Parameters.Cancellations) oss << "\tCancellations will be applied\n";
-			if (Parameters.Times) oss << "\tSearch times will be shown\n";
-			oss << "\tCores: " << (Parameters.Threads == 0 ? "All\n" : std::to_string(Parameters.Threads)) << std::flush;
-			break;
-		case Methods::ROUX:
-			oss << "Parameters summary:\n";
-			oss << "\tSelected method: Roux\n";
-			oss << "\tOrientation(s): " << o_strings[static_cast<int>(Parameters.Orient)] << "\n";
-			oss << "\tNumber of inspections per orientation: " << Parameters.NumInsp << "\n";
-			oss << "\tSelected metric: " << Algorithm::GetMetricString(Parameters.Metric) << "\n";
-			if (Parameters.Collect == Collections::NONE) oss << "\tUsing default algset for Roux: CMLL\n";
-			else if (Parameters.Collect == Collections::CMLL) oss << "\tLast layer corners will be solved with CMLL algorithms\n";
-			else if (Parameters.Collect == Collections::COLL) oss << "\tLast layer corners will be solved with COLL algorithms\n";
-			else oss << "\tInvalid algset for Roux corners, using CMLL instead\n";
-			if (Parameters.OneLookL6E) oss << "\tLast six edges will be solved in one look\n";
-			else oss << "\tLast six edges will be solved in three steps\n";
-			oss << "\tFirst block search depth: " << Parameters.Depth1 << "\n";
-			oss << "\tSecond block search depth: " << Parameters.Depth2 << "\n";
-			if (Parameters.Best) oss << "\tBest solve will be shown\n";
-			if (Parameters.Regrip) oss << "\tRegrips will be added\n";
-			if (Parameters.Cancellations) oss << "\tCancellations will be applied\n";
-			if (Parameters.Times) oss << "\tSearch times will be shown\n";
-			oss << "\tCores: " << (Parameters.Threads == 0 ? "All\n" : std::to_string(Parameters.Threads)) << std::flush;
-			break;
-		case Methods::PETRUS:
-			oss << "Parameters summary:\n";
-			oss << "\tSelected method: Petrus\n";
-			oss << "\tOrientation(s): " << o_strings[static_cast<int>(Parameters.Orient)] << "\n";
-			oss << "\tNumber of inspections per orientation: " << Parameters.NumInsp << "\n";
-			oss << "\tSelected metric: " << Algorithm::GetMetricString(Parameters.Metric) << "\n";
-			if (Parameters.Collect == Collections::NONE) oss << "\tUsing default algset for Petrus: ZBLL\n";
-			else if (Parameters.Collect == Collections::COLL || Parameters.Collect == Collections::EPLL) oss << "\tLast layer in two looks: COLL + EPLL\n";
-			else if (Parameters.Collect == Collections::OCLL || Parameters.Collect == Collections::PLL) oss << "\tLast layer in two looks: OCLL + PLL\n";
-			else if (Parameters.Collect == Collections::ZBLL) oss << "\tLast layer in one look: ZBLL\n";
-			else oss << "\tInvalid algset for Petrus, using ZBLL instead\n";
-			oss << "\tBlock search depth: " << Parameters.Depth1 << "\n";
-			oss << "\tF2L search depth: " << Parameters.Depth2 << "\n";
-			if (Parameters.Best) oss << "\tBest solve will be shown\n";
-			if (Parameters.Regrip) oss << "\tRegrips will be added\n";
-			if (Parameters.Cancellations) oss << "\tCancellations will be applied\n";
-			if (Parameters.Times) oss << "\tSearch times will be shown\n";
-			oss << "\tCores: " << (Parameters.Threads == 0 ? "All\n" : std::to_string(Parameters.Threads)) << std::flush;
-			break;
-		case Methods::ZZ:
-			oss << "Parameters summary:\n";
-			oss << "\tSelected method: ZZ\n";
-			oss << "\tOrientation(s): " << o_strings[static_cast<int>(Parameters.Orient)] << "\n";
-			oss << "\tNumber of inspections per orientation: " << Parameters.NumInsp << "\n";
-			oss << "\tSelected metric: " << Algorithm::GetMetricString(Parameters.Metric) << "\n";
-			if (Parameters.Collect == Collections::NONE) oss << "\tUsing default algset for ZZ: ZBLL\n";
-			else if (Parameters.Collect == Collections::COLL || Parameters.Collect == Collections::EPLL) oss << "\tLast layer in two looks: COLL + EPLL\n";
-			else if (Parameters.Collect == Collections::OCLL || Parameters.Collect == Collections::PLL) oss << "\tLast layer in two looks: OCLL + PLL\n";
-			else if (Parameters.Collect == Collections::ZBLL) oss << "\tLast layer in one look: ZBLL\n";
-			else oss << "\tInvalid algset for Petrus, using ZBLL instead\n";
-			oss << "\tEOX search depth: " << Parameters.Depth1 << "\n";
-			if (Parameters.Best) oss << "\tBest solve will be shown\n";
-			if (Parameters.Regrip) oss << "\tRegrips will be added\n";
-			if (Parameters.Cancellations) oss << "\tCancellations will be applied\n";
-			if (Parameters.Times) oss << "\tSearch times will be shown\n";
-			oss << "\tCores: " << (Parameters.Threads == 0 ? "All\n" : std::to_string(Parameters.Threads)) << std::flush;
-			break;
-		default:
-			oss << "No selected method, appending " << Parameters.NumSolves << " random scramble(s)";
-			oss << " of " << Parameters.LengthScramble << " movements to 'scrambles.txt' file..." << std::flush;
-			break;
+	case Methods::LBL:
+		oss << "Parameters summary:\n";
+		oss << "\tSelected method: Layer-By-Layer (LBL)\n";
+		oss << "\tOrientation (first layer): " << Cube::GetLayerChar(ProcessOrientations(Parameters.Orient)) << "\n";
+		oss << "\tMetric: " << Algorithm::GetMetricString(Parameters.Metric) << "\n";
+		if (Parameters.Times) oss << "\tSearch times will be shown\n";
+		oss << "\tCores: " << (Parameters.Threads == 0 ? "All\n" : std::to_string(Parameters.Threads)) << std::flush;
+		break;
+	case Methods::CFOP:
+		oss << "Parameters summary:\n";
+		oss << "\tSelected method: CFOP\n";
+		oss << "\tOrientation(s): " << o_strings[static_cast<int>(Parameters.Orient)] << "\n";
+		oss << "\tNumber of inspections per orientation: " << Parameters.NumInsp << "\n";
+		oss << "\tMetric: " << Algorithm::GetMetricString(Parameters.Metric) << "\n";
+		if (Parameters.Collect == Collections::NONE) oss << "\tUsing default algset for CFOP: OLL + PLL\n";
+		else if (Parameters.Collect == Collections::OLL || Parameters.Collect == Collections::PLL) oss << "\tLast layer in two looks: OLL + PLL\n";
+		else if (Parameters.Collect == Collections::_1LLL) oss << "\tLast layer in one look: 1LLL\n";
+		else if (Parameters.Collect == Collections::ZBLL) oss << "\tLast layer in two looks: EO + ZBLL\n";
+		else oss << "\tInvalid algset for CFOP, using OLL + PLL instead\n";
+		oss << "\tSearch depth: " << Parameters.Depth1 << "\n";
+		if (Parameters.Best) oss << "\tBest solve will be shown\n";
+		if (Parameters.Regrip) oss << "\tRegrips will be added\n";
+		if (Parameters.Cancellations) oss << "\tCancellations will be applied\n";
+		if (Parameters.Times) oss << "\tSearch times will be shown\n";
+		oss << "\tCores: " << (Parameters.Threads == 0 ? "All\n" : std::to_string(Parameters.Threads)) << std::flush;
+		break;
+	case Methods::ROUX:
+		oss << "Parameters summary:\n";
+		oss << "\tSelected method: Roux\n";
+		oss << "\tOrientation(s): " << o_strings[static_cast<int>(Parameters.Orient)] << "\n";
+		oss << "\tNumber of inspections per orientation: " << Parameters.NumInsp << "\n";
+		oss << "\tSelected metric: " << Algorithm::GetMetricString(Parameters.Metric) << "\n";
+		if (Parameters.Collect == Collections::NONE) oss << "\tUsing default algset for Roux: CMLL\n";
+		else if (Parameters.Collect == Collections::CMLL) oss << "\tLast layer corners will be solved with CMLL algorithms\n";
+		else if (Parameters.Collect == Collections::COLL) oss << "\tLast layer corners will be solved with COLL algorithms\n";
+		else oss << "\tInvalid algset for Roux corners, using CMLL instead\n";
+		if (Parameters.OneLookL6E) oss << "\tLast six edges will be solved in one look\n";
+		else oss << "\tLast six edges will be solved in three steps\n";
+		oss << "\tFirst block search depth: " << Parameters.Depth1 << "\n";
+		oss << "\tSecond block search depth: " << Parameters.Depth2 << "\n";
+		if (Parameters.Best) oss << "\tBest solve will be shown\n";
+		if (Parameters.Regrip) oss << "\tRegrips will be added\n";
+		if (Parameters.Cancellations) oss << "\tCancellations will be applied\n";
+		if (Parameters.Times) oss << "\tSearch times will be shown\n";
+		oss << "\tCores: " << (Parameters.Threads == 0 ? "All\n" : std::to_string(Parameters.Threads)) << std::flush;
+		break;
+	case Methods::PETRUS:
+		oss << "Parameters summary:\n";
+		oss << "\tSelected method: Petrus\n";
+		oss << "\tOrientation(s): " << o_strings[static_cast<int>(Parameters.Orient)] << "\n";
+		oss << "\tNumber of inspections per orientation: " << Parameters.NumInsp << "\n";
+		oss << "\tSelected metric: " << Algorithm::GetMetricString(Parameters.Metric) << "\n";
+		if (Parameters.Collect == Collections::NONE) oss << "\tUsing default algset for Petrus: ZBLL\n";
+		else if (Parameters.Collect == Collections::COLL || Parameters.Collect == Collections::EPLL) oss << "\tLast layer in two looks: COLL + EPLL\n";
+		else if (Parameters.Collect == Collections::OCLL || Parameters.Collect == Collections::PLL) oss << "\tLast layer in two looks: OCLL + PLL\n";
+		else if (Parameters.Collect == Collections::ZBLL) oss << "\tLast layer in one look: ZBLL\n";
+		else oss << "\tInvalid algset for Petrus, using ZBLL instead\n";
+		oss << "\tBlock search depth: " << Parameters.Depth1 << "\n";
+		oss << "\tF2L search depth: " << Parameters.Depth2 << "\n";
+		if (Parameters.Best) oss << "\tBest solve will be shown\n";
+		if (Parameters.Regrip) oss << "\tRegrips will be added\n";
+		if (Parameters.Cancellations) oss << "\tCancellations will be applied\n";
+		if (Parameters.Times) oss << "\tSearch times will be shown\n";
+		oss << "\tCores: " << (Parameters.Threads == 0 ? "All\n" : std::to_string(Parameters.Threads)) << std::flush;
+		break;
+	case Methods::ZZ:
+		oss << "Parameters summary:\n";
+		oss << "\tSelected method: ZZ\n";
+		oss << "\tOrientation(s): " << o_strings[static_cast<int>(Parameters.Orient)] << "\n";
+		oss << "\tNumber of inspections per orientation: " << Parameters.NumInsp << "\n";
+		oss << "\tSelected metric: " << Algorithm::GetMetricString(Parameters.Metric) << "\n";
+		if (Parameters.Collect == Collections::NONE) oss << "\tUsing default algset for ZZ: ZBLL\n";
+		else if (Parameters.Collect == Collections::COLL || Parameters.Collect == Collections::EPLL) oss << "\tLast layer in two looks: COLL + EPLL\n";
+		else if (Parameters.Collect == Collections::OCLL || Parameters.Collect == Collections::PLL) oss << "\tLast layer in two looks: OCLL + PLL\n";
+		else if (Parameters.Collect == Collections::ZBLL) oss << "\tLast layer in one look: ZBLL\n";
+		else oss << "\tInvalid algset for Petrus, using ZBLL instead\n";
+		oss << "\tEOX search depth: " << Parameters.Depth1 << "\n";
+		if (Parameters.Best) oss << "\tBest solve will be shown\n";
+		if (Parameters.Regrip) oss << "\tRegrips will be added\n";
+		if (Parameters.Cancellations) oss << "\tCancellations will be applied\n";
+		if (Parameters.Times) oss << "\tSearch times will be shown\n";
+		oss << "\tCores: " << (Parameters.Threads == 0 ? "All\n" : std::to_string(Parameters.Threads)) << std::flush;
+		break;
+	default:
+		oss << "No selected method, appending " << Parameters.NumSolves << " random scramble(s)";
+		oss << " of " << Parameters.LengthScramble << " movements to 'scrambles.txt' file..." << std::flush;
+		break;
 	}
 	return oss.str();
 }
@@ -1007,7 +1009,7 @@ std::string GetParametersSummary()
 std::string GetExternalFilesCheck()
 {
 	std::ostringstream oss;
-	
+
 	oss << "Number of 3-movements cancellations loaded: " << std::to_string(Algorithm::GetCancellation3Size() >> 1) << "\n";
 	oss << "Number of 2-movements cancellations loaded: " << std::to_string(Algorithm::GetCancellation2Size() >> 1) << "\n";
 	oss << "OLL algorithms loaded: " << std::to_string(Cube::OLL_Algorithms.GetCasesNumber()) << "\n";
@@ -1018,6 +1020,6 @@ std::string GetExternalFilesCheck()
 	oss << "EPLL algorithms loaded: " << std::to_string(Cube::EPLL_Algorithms.GetCasesNumber()) << "\n";
 	oss << "OCLL algorithms loaded: " << std::to_string(Cube::OCLL_Algorithms.GetCasesNumber()) << "\n";
 	oss << "CMLL algorithms loaded: " << std::to_string(Cube::CMLL_Algorithms.GetCasesNumber()) << "\n";
-	
+
 	return oss.str();
 }
