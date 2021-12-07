@@ -176,16 +176,62 @@ See https://www.speedsolving.com/wiki/index.php/Metric for information about met
 This parameter specifies the amount of CPU cores (threads) used in the search. A '0' value means all available cores will be used (default).
 
 
-### Layer-By-Layer method
+
+### Common parameters - TIME (time)
+
+If this parameter is present, the solves search times will be shown.
 
 
-### CFOP method
+### Layer-By-Layer method (LBL)
+
+The LBL (Layer-By-Layer) method or beginners method is based on solving the layers of the cube one by one. The first layer is solved in two steps: first the cross, indicating the movements needed to solve each edge, and then the corners, one by one.
+
+For the second layer, the movements required to complete each of its edges are shown.
+
+The last layer is solved in four steps: orientation of the cross, permutation of the cross, corners permutation and, finally, corners orientation.
+
+Each step of the last layer uses only one algorithm (shown in parentheses each time it appears).
 
 
-### Roux method
+### CFOP method (cfop)
+
+The cross is searched on each of the specified orientations, with the specified number of moves (search depth **-d[number]**). If this parameter is very low (less than 6) solutions will hardly be found. With a value of 6 or 7, results should appear and with 8 it is very likely that an "XCross" will be found. The solution of the cross is chosen among all the possible ones evaluating its number of movements, but also taking into account that the arrangement of the pieces for F2L is as favorable as possible.
+
+First two layers (F2L) search is fast, about 2 or 3 seconds per inspection on a modern processor, and it will try to get the shortest possible solution for each solve.
+
+The next step is to get the appropriate algorithms for **OLL** and **PLL**. These algorithms are predefined and their search is very fast. It is also possible to complete the last layer in a single algorithm (**1LLL**), or even with edges orientation and **ZBLL** algorithms (EO+ZBLL) -edges orientation search lasts a bit more time-.
 
 
-### Petrus method
+### Roux method (roux)
+
+The first block is searched for each possible orientations of the cube, using at most the number of moves specified for the first block (search depth **-d[number]**). If this parameter is very low (less than 6) you will hardly find solutions. With a value of 6 or 7, results should already appear, and with 8, a result should appear for each orientation. The solution for the first block is taken among all possible ones by evaluating its number of movements, but also taking into account that the arrangement of the pieces to form the second block is as favorable as possible.
+
+The search for the second block will be done in a similar way to the first, trying to form it completely. If this is not possible, the search will be carried out in two steps, searching in each of them for the sub-blocks (squares) that form the second block. You can specify his own search depth (**-s[number]**).
+
+The appropriate algorithm is then found to orient the upper corners (**CMLL** or **COLL**, as selected). These algorithms are predefined and their search is very fast.
+
+Finally, the last six edges are solved using movements of the U and M layers. It can be obtained in a single step (**L6E** parameter) or can be divided into three searches (default):
+- orientation of the last six edges
+- resolution of the edges in the UR and UL positions
+- final resolution.
 
 
-### ZZ method
+### Petrus method (petrus)
+
+The first block is searched for each possible orientations of the cube, using at most the number of moves specified for the first block (search depth **-d[number]**). If this parameter is very low (less than 6) you will hardly find solutions. With a value of 6 or 7, results should already appear, and with 8, a result should appear for each orientation. The solution for the first block is taken among all possible ones by evaluating its number of movements, but also taking into account that the arrangement of the pieces to expand the block is as favorable as possible.
+
+The search for the expanded block will be done in a similar way. Then the edges orientation will be performed.
+
+The next step is to complete the first two layers (F2L), you can specify his own search depth (**-s[number]**).
+
+Finally the last layer will be solved using **ZBLL**, **COLL**+**EPLL** or **OCLL**+**PLL** algorithms. These algorithms are predefined and their search is very fast.
+
+
+### ZZ method (zz)
+
+The search starts trying to find one of this structures: EOLine, EOArrow, EOCross, XEOLine, XEOCross and EO223 (search depth **-d[number]**). The solution is chosen for the most complex structure, among all the possible ones, evaluating also its number of movements and taking into account that the arrangement of the pieces for F2L is as favorable as possible.
+
+First two layers (F2L) search is fast, about 2 or 3 seconds per inspection on a modern CPU, and it will try to get the shortest possible solution for each solve.
+
+Finally the last layer will be solved using **ZBLL**, **COLL**+**EPLL** or **OCLL**+**PLL** algorithms. These algorithms are predefined and their search is very fast.
+	
