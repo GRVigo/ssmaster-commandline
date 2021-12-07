@@ -10,7 +10,7 @@ Unzip the release file in a directory with write permissions. If you list the fi
 1LLL.xml  cancel2.xml  cancel3.xml  CMLL.xml  COLL.xml  EPLL.xml  OCLL.xml  OLL.xml  PLL.xml  ssmaster  ZBLL.xml
 ```
 
-**cancel2.xml** and **cancel3.xml** are equivalences between algorithms for get cancellations, you should not edit this files. The other xml files are algsets used in the different methods. You could edit them to use your own algorithms, but be careful with the format.
+**cancel2.xml** and **cancel3.xml** are equivalences between algorithms for get cancellations, you should not edit this files. The other xml files are algsets used in the different methods. You could edit them to use your own algorithms, but be careful with the XML format.
 
 Note: some algsets have more than one algorithm per case, but only the first one will be used.
 
@@ -104,6 +104,162 @@ Crosses search time: 5.554943 s
 F2L search time: 5.790450 s
 Last layer search time: 0.077387 s
 Threads used: 12 of 12
+```
+
+
+### Roux example
+
+Roux search with orientation with layers U & D up, 3 inspections maximum per orientation, COLL algset for last layer corners, last six edges solved in one look, best solve will be shown in detail, OBTM metric will be used, search depth is set to 7 for first block, 6 for second block, and search times will be shown:
+
+```
+> ./ssmaster roux -oUD -i3 coll l6e best obtm -d7 -s6 time
+Selected Roux method (parameter 'roux')
+Orientation search defined (parameter '-oUD')
+Number of inspections set to 3 (parameter '-i3')
+Selected COLL algorithms collection (parameter 'coll')
+Roux L6E in one look (parameter 'l6e')
+Show best solve (parameter 'best')
+Using OBTM metric (parameter 'obtm')
+Primary depth set to 7 (parameter '-d7')
+Secondary depth set to 6 (parameter '-s6')
+Show times (parameter 'time')
+Parameters summary:
+        Selected method: Roux
+        Orientation(s): U & D layers up
+        Number of inspections per orientation: 3
+        Selected metric: OBTM
+        Last layer corners will be solved with COLL algorithms
+        Last six edges will be solved in one look
+        First block search depth: 7
+        Second block search depth: 6
+        Best solve will be shown
+        Search times will be shown
+        Cores: All
+Scrambles file detected, using it for solves...
+Solve 1 of 1
+Searching Roux first blocks... second blocks... COLL... L6E... Done!
+
+Roux search for Scramble (20): F B' R U F' D F' B2 U' R' F2 U D R2 U' B' R2 L D' U2
+--------------------------------------------------------------------------------
+[UF|54 OBTM]: (U B R' F2 R D' F2) (r U M' F R2 F' M2) (R U2 R' U' R U R') (U' F R U' R' U R U R' U R U' R' F') (M' U' M U M' U M U M U2 M')
+[UR|49 OBTM]: (y) (R' U B2 D' L F L) (r' F R2 F' U R2 M') (U R' U R U R' U2 R) (U R U2 R D R' U2 R D' R2) (U M U' M' U2 M' U M2 U' M' U')
+[UR|44 OBTM]: (y) (L R2 F U2 B' L D) (U R B' R B R) (B U2 B' U R' U' R) (R' U2 R F U' R' U' R U F') (M2 U2 M U M' U2 M' U2 M')
+[UL|51 OBTM]: (y') (R' U B' D' B2 L D2) (M' B' R B R F R' F' M) (U' B U2 B' U R' U' R) (R' U R U2 R' L' U R U' L) (U2 M' U' M U M2 U' M' U2 M')
+[DB|47 OBTM]: (x2) (L2 U' B2 R' F' R2 D2) (B' R2 B U R2 U2 R) (U R U' R' U2 F' U' F) (U2 r U2 R2 F R F' R U2 r') (M2 U' M U2 M' U M' U' M' U2)
+[DB|54 OBTM]: (x2) (D U' L U2 B2 R2 F) (U' M2 U M2 F R2 F') (U R U' R' F' U' F) (U2 R U R' U F' R U2 R' U2 R' F R) (U2 M' U M2 U M' U2 M' U M' U M2)
+
+
+Best solve - Roux search with orientation UR:
+---------------------------------
+Inspection [UR]: y
+
+First block (7): L R2 F U2 B' L D
+Second block - square (6): U R B' R B R
+Second block (7): B U2 B' U R' U' R
+COLL (10): R' U2 R F U' R' U' R U F'
+L6E (14): M2 U2 M U M' U2 M' U2 M'
+
+Solve metric: 44 OBTM
+COLL case: U6
+
+Total search time: 7.719670 s
+First blocks search time: 5.775885 s
+Second blocks search time: 0.569311 s
+COLL search time: 0.002474 s
+L6E search time: 1.372000 s
+Threads used: 12 of 12
+```
+
+### Petrus example
+
+```
+> ./ssmaster petrus -oUF -i6 ocll best -d8 -s6
+Selected Petrus method (parameter 'petrus')
+Orientation search defined (parameter '-oUF')
+Number of inspections set to 6 (parameter '-i6')
+Selected OCLL algorithms collection (parameter 'ocll')
+Show best solve (parameter 'best')
+Primary depth set to 8 (parameter '-d8')
+Secondary depth set to 6 (parameter '-s6')
+Parameters summary:
+        Selected method: Petrus
+        Orientation(s): UF
+        Number of inspections per orientation: 6
+        Selected metric: STM
+        Last layer in two looks: OCLL + PLL
+        Block search depth: 8
+        F2L search depth: 6
+        Best solve will be shown
+        Cores: All
+Scrambles file detected, using it for solves...
+Solve 1 of 1
+Searching Petrus blocks... expanding blocks... EO... F2L... OCLL... PLL... Done!
+
+Petrus search for Scramble (20): F B' R U F' D F' B2 U' R' F2 U D R2 U' B' R2 L D' U2
+--------------------------------------------------------------------------------
+[UF|52 STM]: (F U' F R2 F B2 R' D) (R2 F2 R U' R2 F) (B U' B' S' U S U' F R F') (U R U2 R' U R U' R') (y R' F' L' F R F' L F) (R' U2 R U R' U2 L U' R U L' U2)
+[UF|59 STM]: (R' U' F' R' D L F' L) (R F2 U' F U' R F2) (R2 S' U' S B U' B' f' U2 f) (U' R' U2 R U' R' U R) (R U R' U R U' R' U R U2 R') (R U R' U' R' F R2 U' R' U' R U R' F' U2)
+[UF|44 STM]: (U2 R' U F U' L D' L) (F2 U' F R' F2) (U' F R' F' B' R B) (U2 R U' R') (y2 R' U L U' R U L') (y R' U' R y R2 u R' U R U' R u' R2 U2)
+[UF|54 STM]: (U B R' L' F L F D') (F R U R' F2 R U F') (B U' B' R F' U' F S' U2 S) (U' R' U' R U R' U2 R) (y L F R' F' L' F R F') (y R2 u R' U R' U' R u' R2 y' R' U R )
+[UF|51 STM]: (R' U2 R' F U D' L D') (U' F R2 U' F2) (R' S' U' S B U B' f' U2 f) (U R' U' R U R' U2 R) (y' R' U L U' R U L') (y2 R' U' R y R2 u R' U R U' R u' R2 U2)
+[UF|55 STM]: (F R L B2 D' F U L') (U2 F R' F R F U F') (U S R2 S' F R2 F' S R' S') (R' U R U' R' U R) (y' R2 D' R U2 R' D R U2 R) (y R2 u R' U R' U' R u' R2 y' R' U R U2)
+
+
+Best solve - Petrus search with orientation UF:
+---------------------------------
+Block (8): U2 R' U F U' L D' L
+Expanded block (5): F2 U' F R' F2
+EO (7): U' F R' F' B' R B
+F2L (4): U2 R U' R'
+OCLL (7): y2 R' U L U' R U L'
+PLL (13): y R' U' R y R2 u R' U R U' R u' R2 U2
+
+Solve metric: 44 STM
+OCLL case: Antisune
+PLL case: Gb
+```
+
+### ZZ example
+
+```
+> ./ssmaster zz -oBL -i4 zbll best -d8
+Selected ZZ method (parameter 'zz')
+Orientation search defined (parameter '-oBL')
+Number of inspections set to 4 (parameter '-i4')
+Selected ZBLL algorithms collection (parameter 'zbll')
+Show best solve (parameter 'best')
+Primary depth set to 8 (parameter '-d8')
+Parameters summary:
+        Selected method: ZZ
+        Orientation(s): BL
+        Number of inspections per orientation: 4
+        Selected metric: STM
+        Last layer in one look: ZBLL
+        EOX search depth: 8
+        Best solve will be shown
+        Cores: All
+Scrambles file detected, using it for solves...
+Solve 1 of 1
+Searching EOX... F2L... ZBLL... Done!
+
+ZZ search for Scramble (20): F B' R U F' D F' B2 U' R' F2 U D R2 U' B' R2 L D' U2
+--------------------------------------------------------------------------------
+[BL|EOLine 60 STM]: (z x') (R B' D2 L2 D' F' L U') (L U' L' U' R' U' R L2 U' L2) (U R' U2 R U' L U L') (U' R' U' R U' R2 U' R2) (R U' R' U' R U2 R' U R U R') (y2 R U2 R2 U' R2 U' R' U R' U' R U R' U R )
+[BL|EOLine 58 STM]: (z x') (R B' D2 L2 D' F' L U) (L U' L' U' R' U' R L2 U' L2) (U R' U R U' L U L') (R U2 R' U' R' U' R U' R2 U' R2) (R' U2 R U R' U' R) (y' D' R2 U R' U' R' U R' D U' R' U R U')
+
+
+Best solve - ZZ search with cube in orientation BL:
+---------------------------------
+Inspection [BL]: z x'
+EOLine (8): R B' D2 L2 D' F' L U
+F2L 1 (10): L U' L' U' R' U' R L2 U' L2
+F2L 2 (8): U R' U R U' L U L'
+F2L 3 (11): R U2 R' U' R' U' R U' R2 U' R2
+F2L 4 (7): R' U2 R U R' U' R
+ZBLL (14): y' D' R2 U R' U' R' U R' D U' R' U R U'
+
+Solve metric: 58 STM
+ZBLL case: L 13
 ```
 
 ### Common parameters - ORIENTATION (-o[orientation])
