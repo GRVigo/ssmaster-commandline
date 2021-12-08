@@ -55,7 +55,7 @@ The last layer is solved in four steps: orientation of the cross, permutation of
 Each step of the last layer uses only one algorithm (shown in parentheses each time it appears).
 
 ```
-> ./ssmaster lbl time
+> ./ssmaster lbl
 ```
 
 
