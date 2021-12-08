@@ -43,6 +43,7 @@ No selected method, appending 100 random scramble(s) of 25 movements to 'scrambl
 
 To continue this tutorial, delete the **scrambles.txt** file and generate a new one with only a scramble.
 
+
 ### Layer-By-Layer method (LBL)
 
 The LBL (Layer-By-Layer) method or beginners method is based on solving the layers of the cube one by one. The first layer is solved in two steps: first the cross, indicating the movements needed to solve each edge, and then the corners, one by one.
@@ -52,6 +53,12 @@ For the second layer, the movements required to complete each of its edges are s
 The last layer is solved in four steps: orientation of the cross, permutation of the cross, corners permutation and, finally, corners orientation.
 
 Each step of the last layer uses only one algorithm (shown in parentheses each time it appears).
+
+```
+> ./ssmaster lbl time
+```
+
+
 ### CFOP method (cfop)
 
 The cross is searched on each of the specified orientations, with the specified number of moves (search depth **-d[number]**). If this parameter is very low (less than 6) solutions will hardly be found. With a value of 6 or 7, results should appear and with 8 it is very likely that an "XCross" will be found. The solution of the cross is chosen among all the possible ones evaluating its number of movements, but also taking into account that the arrangement of the pieces for F2L is as favorable as possible.
@@ -127,6 +134,7 @@ F2L search time: 5.790450 s
 Last layer search time: 0.077387 s
 Threads used: 12 of 12
 ```
+
 
 ### Roux method (roux)
 
@@ -209,6 +217,7 @@ L6E search time: 1.372000 s
 Threads used: 12 of 12
 ```
 
+
 ### Petrus method (petrus)
 
 The first block is searched for each possible orientations of the cube, using at most the number of moves specified for the first block (search depth **-d[number]**). If this parameter is very low (less than 6) you will hardly find solutions. With a value of 6 or 7, results should already appear, and with 8, a result should appear for each orientation. The solution for the first block is taken among all possible ones by evaluating its number of movements, but also taking into account that the arrangement of the pieces to expand the block is as favorable as possible.
@@ -270,6 +279,7 @@ Solve metric: 44 STM
 OCLL case: Antisune
 PLL case: Gb
 ```
+
 
 ### ZZ method (zz)
 
