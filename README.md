@@ -409,7 +409,7 @@ Note: inspections parameter do not have influence in LBL method.
 
 ### Common parameters - CANCELLATIONS (canc)
 
-If the cancellation option is enabled, cancellation of movements will be applyed to each solution in order to get the lower metric (STM by default). Cancellations metric will be shown surrounded by parentheses at the begining of each solve, near the regular metric. This metric will be used for evaluate the best solve, if the best solve option is enabled.
+If the cancellation option is enabled, cancellation of movements will be applied to each solution in order to get the lower metric (STM by default). Cancellations metric will be shown surrounded by parentheses at the begining of each solve, near the regular metric. This metric will be used for evaluate the best solve, if the best solve option is enabled.
 
 Note: Cancellations will not be applied in LBL method.
 
@@ -467,7 +467,15 @@ See https://www.speedsolving.com/wiki/index.php/Metric for information about met
 This parameter specifies the amount of CPU cores (threads) used in the search. A '0' value means all available cores will be used (default).
 
 
-
 ### Common parameters - TIME (time)
 
 If this parameter is present, the solves search times will be shown.
+
+
+### Tips
+
+- If you specify a single orientation (ex: **-oBF**), increase the number of inspections (ex: **-i8**).
+- When you especify a single orientation, there are more possibilities for not getting results. In this case, increase the search depth (**-d7** or **-d8**).
+- First try search a search depth of 6 or 7. If you want more results increase it to 8 or even 9 (a value of 9 could last an hour of processing time in a modern processor). Higher values are not recommended.
+- If you increase the number of inspections and you not get more results, increase the search depth.
+- To avoid your computer being freeze while processing, limit the number of cores used with the **-t** parameter (but the search time will be longer).
