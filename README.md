@@ -10,6 +10,12 @@ Unzip the release file in a directory with write permissions. If you list the fi
 1LLL.xml  cancel2.xml  cancel3.xml  CMLL.xml  COLL.xml  EPLL.xml  OCLL.xml  OLL.xml  PLL.xml  ssmaster  ZBLL.xml
 ```
 
+In Linux, make sure that **ssmaster** file has execution rights:
+
+```
+chmod +x ssmaster
+```
+
 **cancel2.xml** and **cancel3.xml** are equivalences between algorithms for get cancellations, you should not edit this files. The other xml files are algsets used in the different methods. You could edit them to use your own algorithms, but be careful with the XML format.
 
 Note: some algsets have more than one algorithm per case, but only the first one will be used.
