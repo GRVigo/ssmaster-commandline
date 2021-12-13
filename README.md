@@ -480,7 +480,7 @@ If this parameter is present, the solves search times will be shown.
 
 ### Tips
 
-- If you specify a single orientation (ex: **-oBF**), increase the number of inspections (ex: **-i8**).
+- If you specify a single orientation (ex: **-oUF**), increase the number of inspections (ex: **-i8**).
 - When you especify a single orientation, there are more possibilities for not getting results. In this case, increase the search depth (**-d7** or **-d8**).
 - If you increase the number of inspections and you not get more results, increase the search depth.
 - First try search a search depth of 6 or 7. If you want more results increase it to 8 or even 9 (a value of 9 could last an hour of processing time in a modern processor). Higher values are not recommended.
